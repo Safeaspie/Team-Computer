@@ -1,0 +1,53 @@
+CREATE TABLE User (
+    UserID INT NOT NULL UNIQUE AUTO_INCREMENT, /*Do not add users with and ID */
+    FullName VARCHAR(20) NOT NULL,
+    Email VARCHAR(40) NOT NULL,
+    DOB DATE,
+    Role VARCHAR(20),
+    password VARCHAR(40),
+    salt VARCHAR(40),    
+    is_active BOOL,
+    sessionID VARCHAR(40),
+
+    PRIMARY KEY (UserID)
+);
+
+CREATE TABLE MemberList (
+    MemberListID INT UNIQUE NOT NULL AUTO_INCREMENT,
+    UserID INT UNIQUE NOT NULL,
+
+    PRIMARY KEY (MemberListID),
+    FOREIGN KEY(UserID) REFERENCES User(UserID)
+);
+
+CREATE TABLE GroupChat (
+    GroupChatID INT UNIQUE NOT NULL AUTO_INCREMENT,
+    MemberListID INT UNIQUE NOT NULL,
+    CreateDate DATE,
+
+    PRIMARY KEY(GroupChatID),
+    FOREIGN KEY (MemberListID) REFERENCES MemberList(MemberListID)
+);
+
+CREATE TABLE Message (
+    MessageID INT UNIQUE NOT NULL AUTO_INCREMENT,
+    UserID INT  NOT NULL,
+    ConvID INT  NOT NULL,
+    MessageBody VARCHAR(150),
+    CreateDate DATETIME,
+
+
+    PRIMARY KEY (MessageID),
+    FOREIGN KEY (UserID) REFERENCES User(UserID)
+);
+
+CREATE TABLE GroupMessage (
+    MessageID INT UNIQUE NOT NULL AUTO_INCREMENT,
+    GroupID INT UNIQUE NOT NULL,
+    MessageBody VARCHAR(150),
+    CreateData DATE,
+
+
+    PRIMARY KEY (MessageID),
+    FOREIGN KEY (GroupID) REFERENCES MemberList(MemberListID)
+);
